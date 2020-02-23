@@ -1,0 +1,124 @@
+openapi: 3.0.1
+info:
+  description: This API allows you to use a predition model to predict the outcome
+    of League of Legends games based on their objective score using Machine Learning.
+  license:
+    name: WTFPL 2
+    url: http://www.wtfpl.net/txt/copying/
+  title: LoL prediction
+  version: 1.0.0
+servers:
+- url: https://lol-foresight.herokuapp.com/api
+tags:
+- description: Predict the outcome of games
+  name: Game
+paths:
+  /predict:
+    post:
+      operationId: predict_game
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Score'
+        description: Objective score
+        required: true
+      responses:
+        "405":
+          content: {}
+          description: Invalid input
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: OK
+      summary: Predict a game
+      tags:
+      - Game
+      x-openapi-router-controller: openapi_server.controllers.game_controller
+components:
+  schemas:
+    Score:
+      example:
+        firstBlood: 0
+        team2_rift_herald_kills: 1
+        team2_tower_kills: 2
+        team2_dragon_kills: 7
+        team2_baron_kills: 1
+        team1_dragon_kills: 7
+        firstDragon: 5
+        team1_rift_herald_kills: 3
+        team1_baron_kills: 9
+        team1_inhibitor_kills: 2
+        firstInhibitor: 1
+        firstTower: 6
+        team2_inhibitor_kills: 4
+        team1_tower_kills: 5
+      properties:
+        firstBlood:
+          format: int64
+          type: integer
+        firstTower:
+          format: int64
+          type: integer
+        firstInhibitor:
+          format: int64
+          type: integer
+        firstDragon:
+          format: int64
+          type: integer
+        team1_tower_kills:
+          format: int64
+          type: integer
+        team1_inhibitor_kills:
+          format: int64
+          type: integer
+        team1_dragon_kills:
+          format: int64
+          type: integer
+        team1_baron_kills:
+          format: int64
+          type: integer
+        team1_rift_herald_kills:
+          format: int64
+          type: integer
+        team2_tower_kills:
+          format: int64
+          type: integer
+        team2_inhibitor_kills:
+          format: int64
+          type: integer
+        team2_dragon_kills:
+          format: int64
+          type: integer
+        team2_baron_kills:
+          format: int64
+          type: integer
+        team2_rift_herald_kills:
+          format: int64
+          type: integer
+      required:
+      - firstBlood
+      - firstDragon
+      - firstInhibitor
+      - firstTower
+      - team1_baron_kills
+      - team1_dragon_kills
+      - team1_inhibitor_kills
+      - team1_rift_herald_kills
+      - team1_tower_kills
+      - team2_baron_kills
+      - team2_dragon_kills
+      - team2_inhibitor_kills
+      - team2_rift_herald_kills
+      - team2_tower_kills
+      type: object
+    ApiResponse:
+      example:
+        winner: 0
+      properties:
+        winner:
+          format: int64
+          type: integer
+      type: object
